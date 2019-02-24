@@ -34,9 +34,10 @@ app.get('/auth', async (req, res) => {
       'accept=json'
   )
 
-  resp = await resp.json()
+  resp = await resp.text()
 
-  console.log(res)
+  console.log(resp)
+  res.send('ok')
 })
 
 app.listen(process.env.PORT || DEFAULT_PORT, async () => {
