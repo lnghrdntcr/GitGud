@@ -18,7 +18,7 @@ app.post('/' + process.env.BOT_TOKEN, (req, res) => {
 app.get('/auth', async (req, res) => {
   const { code: tempToken } = req.query
 
-  let res = await fetch(
+  let resp = await fetch(
     GITHUB_ACCESS_TOKEN_LINK +
       '?' +
       'client_id=' +
@@ -33,7 +33,7 @@ app.get('/auth', async (req, res) => {
       'accept=json'
   )
 
-  res = await res.json()
+  resp = await resp.json()
 
   console.log(res)
 })
