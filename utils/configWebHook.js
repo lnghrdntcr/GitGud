@@ -36,6 +36,5 @@ async function checkConfig() {
 }
 
 module.exports = {
-  DEFAULT_PORT,
   checkConfig
 }
