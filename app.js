@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const fetch = require('node-fetch')
 
 const bot = require('./bot/bot')
+const { checkConfig } = require('./utils/configWebHook')
 
 const { DEFAULT_PORT, GITHUB_ACCESS_TOKEN_LINK } = require('./utils/constants')
 
@@ -39,5 +40,6 @@ app.get('/auth', async (req, res) => {
 })
 
 app.listen(process.env.PORT || DEFAULT_PORT, async () => {
+  await checkConfig()
   console.log('App listening on port ' + (process.env.PORT || DEFAULT_PORT))
 })
