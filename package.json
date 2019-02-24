@@ -1,0 +1,13 @@
+{
+  "name": "GitGud",
+  "version": "0.0.1",
+  "main": "app.js",
+  "author": "Francesco Sgherzi",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "node-fetch": "^2.3.0",
+    "node-telegram-bot-api": "^0.30.0"
+  }
+}
