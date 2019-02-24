@@ -2,6 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const fetch = require('node-fetch')
 
+const bot = require('./bot/bot')
+
 const { DEFAULT_PORT, GITHUB_ACCESS_TOKEN_LINK } = require('./utils/constants')
 
 const app = express()

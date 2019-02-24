@@ -13,3 +13,5 @@ bot.on(/\/login/, msg => {
     `Click on this link to authenticate!\n${GITHUB_AUTH_LINK}`
   )
 })
+
+module.exports = bot
