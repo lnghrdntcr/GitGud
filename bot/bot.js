@@ -5,7 +5,7 @@ const bot = new Bot(process.env.BOT_TOKEN)
 
 bot.setWebHook(process.env.WEBHOOK_URL)
 
-bot.on(/\/login/, msg => {
+bot.onText(/\/login/, msg => {
   const { id: uid } = msg.chat
 
   bot.sendMessage(
