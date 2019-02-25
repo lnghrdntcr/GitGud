@@ -10,7 +10,7 @@ bot.onText(/\/login/, msg => {
 
   bot.sendMessage(
     uid,
-    `Click on this link to authenticate!\n${GITHUB_AUTH_LINK}`
+    `Click on this link to authenticate!\n${GITHUB_AUTH_LINK}&state=${uid}`
   )
 })
 
