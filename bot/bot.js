@@ -15,7 +15,7 @@ bot.onText(/\/start/, async msg => {
     uid,
     `Click on this link to authenticate!\n${GITHUB_AUTH_LINK}&state=${uid}`
   )
-
+  // TODO: catch this motherfather
   await storeUser({ uid, state: 'INIT' })
 })
 

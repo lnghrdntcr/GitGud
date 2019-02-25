@@ -17,7 +17,7 @@ app.post('/' + process.env.BOT_TOKEN, (req, res) => {
 })
 
 app.get('/auth', async (req, res) => {
-  const { code: tempToken } = req.query
+  const { code: tempToken, state } = req.query
 
   let resp = await fetch(
     GITHUB_ACCESS_TOKEN_LINK +
@@ -40,6 +40,8 @@ app.get('/auth', async (req, res) => {
   resp = await resp.json()
 
   /*Save token to database*/
+
+  bot.sendMessage(state, 'Successfully authenticated!')
 
   console.log(resp)
   res.redirect('http://t.me/git_gud_bot')
