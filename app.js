@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const fetch = require('node-fetch')
 
 const bot = require('./bot/bot')
-const { checkConfig } = require('./utils/configWebHook')
+const { checkConfig } = require('./utils/configure')
 
 const { DEFAULT_PORT, GITHUB_ACCESS_TOKEN_LINK } = require('./utils/constants')
 

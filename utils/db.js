@@ -20,6 +20,17 @@ async function connect() {
   return await pool.connect()
 }
 
+async function storeUser({ uid, state }) {
+  const client = await connect()
+  try {
+    await client.query('INSERT INTO account VALUES($1, $2)', [uid, state])
+  } catch (err) {
+    await client.release()
+    throw err
+  }
+}
+
 module.exports = {
-  connect
+  connect,
+  storeUser
 }

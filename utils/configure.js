@@ -51,6 +51,10 @@ async function setUpDb() {
       'CREATE TABLE IF NOT EXISTS repo(user_id varchar(30) PRIMARY KEY, repo_url VARCHAR(1000) NOT NULL)'
     )
 
+    await client.query(
+      'CREATE TABLE IF NOT EXISTS token(user_id varchar(30) PRIMARY KEY, token VARCHAR(100) NOT NULL)'
+    )
+
     await client.query('END')
   } catch (err) {
     await client.release()
