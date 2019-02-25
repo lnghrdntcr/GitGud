@@ -44,7 +44,7 @@ async function setUpDb() {
     await client.query('BEGIN')
 
     await client.query(
-      'CREATE TABLE IF NOT EXISTS user(user_id PRIMARY KEY, state VARCHAR(100) NOT NULL)'
+      'CREATE TABLE IF NOT EXISTS account(user_id PRIMARY KEY, state VARCHAR(100) NOT NULL)'
     )
 
     await client.query(
