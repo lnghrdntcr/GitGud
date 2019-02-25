@@ -1,4 +1,5 @@
 const fetch = require('node-fetch')
+const { connect } = require('./db')
 
 const TELEGRAM_BOT_URL = `https://api.telegram.org/bot${process.env.BOT_TOKEN}`
 
@@ -31,8 +32,32 @@ async function checkWebHook(url) {
   if (url !== res.result.url) await setWebHook(url)
 }
 
+/**
+ * CREATE TABLE IF NOT EXISTS myschema.mytable (i integer);
+ * Sets up the database, if not configured
+ * @param {string} databaseUrl
+ */
+async function setUpDb() {
+  const client = await connect()
+
+  await client.query('BEGIN')
+  await client.query(
+    'CREATE TABLE IF NOT EXISTS user (user_id PRIMARY KEY UNIQUE NOT NULL, state VARCHAR(100))'
+  )
+
+  await client.query(
+    'CREATE TABLE IF NOT EXISTS repo (user_id PRIMARY KEY UNIQUE NOT NULL, repo_url VARCHAR(1000))'
+  )
+
+  await client.query('END')
+  await client.release()
+}
+
 async function checkConfig() {
+  console.log('SETTING UP WEBHOOK')
   await checkWebHook(process.env.WEBHOOK_URL)
+  console.log('SETTING UP DATABASE')
+  await setUpDb()
 }
 
 module.exports = {

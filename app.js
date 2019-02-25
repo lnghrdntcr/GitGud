@@ -46,6 +46,12 @@ app.get('/auth', async (req, res) => {
 })
 
 app.listen(process.env.PORT || DEFAULT_PORT, async () => {
-  await checkConfig()
+  try {
+    await checkConfig()
+  } catch (err) {
+    console.log(err)
+    process.exit(1)
+  }
+
   console.log('App listening on port ' + (process.env.PORT || DEFAULT_PORT))
 })

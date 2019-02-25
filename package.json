@@ -8,6 +8,7 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "node-fetch": "^2.3.0",
+    "node-pg": "^1.0.1",
     "node-telegram-bot-api": "^0.30.0"
   }
 }
