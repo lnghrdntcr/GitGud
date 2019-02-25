@@ -29,15 +29,20 @@ app.get('/auth', async (req, res) => {
       process.env.GITHUB_CLIENT_SECRET +
       '&' +
       'code=' +
-      tempToken +
-      '&' +
-      'accept=json'
+      tempToken,
+    {
+      headers: new fetch.Headers({
+        Accept: 'application/json'
+      })
+    }
   )
 
-  resp = await resp.text()
+  resp = await resp.json()
+
+  /*Save token to database*/
 
   console.log(resp)
-  res.send('ok')
+  res.redirect('http://t.me/git_gud_bot')
 })
 
 app.listen(process.env.PORT || DEFAULT_PORT, async () => {
