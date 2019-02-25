@@ -38,19 +38,24 @@ async function checkWebHook(url) {
  * @param {string} databaseUrl
  */
 async function setUpDb() {
-  const client = await connect()
+  try {
+    const client = await connect()
 
-  await client.query('BEGIN')
-  await client.query(
-    'CREATE TABLE IF NOT EXISTS user (user_id PRIMARY KEY UNIQUE NOT NULL, state VARCHAR(100))'
-  )
+    await client.query('BEGIN')
 
-  await client.query(
-    'CREATE TABLE IF NOT EXISTS repo (user_id PRIMARY KEY UNIQUE NOT NULL, repo_url VARCHAR(1000))'
-  )
+    await client.query(
+      'CREATE TABLE IF NOT EXISTS user(user_id PRIMARY KEY, state VARCHAR(100) NOT NULL)'
+    )
 
-  await client.query('END')
-  await client.release()
+    await client.query(
+      'CREATE TABLE IF NOT EXISTS repo(user_id PRIMARY KEY, repo_url VARCHAR(1000) NOT NULL)'
+    )
+
+    await client.query('END')
+  } catch (err) {
+    await client.release()
+    throw err
+  }
 }
 
 async function checkConfig() {
