@@ -3,7 +3,7 @@
  */
 const { Pool, Client } = require('pg')
 
-const { encode } = require('./crypto')
+const { encode, decode } = require('./crypto')
 
 /**
  * Create a connection pool for the database
@@ -53,8 +53,30 @@ async function storeToken({ uid, access_token }) {
   }
 }
 
+/**
+ * Retrieves the saved token from the database
+ * @param {string} uid
+ * @returns The decrypted token
+ */
+async function retrieveToken(uid) {
+  const client = await connect()
+
+  try {
+    const { rows: token } = await client.query(
+      'SELECT token from token where user_id = $1 LIMIT 1',
+      [uid]
+    )
+    // TODO: If the user doesn't exist, throw an error
+    return decode(token)
+  } catch (err) {
+    await client.release()
+    throw err
+  }
+}
+
 module.exports = {
   connect,
   storeToken,
-  storeUser: updateUser
+  updateUser,
+  retrieveToken
 }

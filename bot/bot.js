@@ -1,6 +1,9 @@
 const Bot = require('node-telegram-bot-api')
+const fetch = require('node-fetch')
+
 const { GITHUB_AUTH_LINK } = require('../utils/constants')
-const { storeUser } = require('../utils/db')
+const { updateUser, retrieveToken } = require('../utils/db')
+const { INIT, GITHUB_REPO_URL } = require('../utils/constants')
 
 const bot = new Bot(process.env.BOT_TOKEN)
 
@@ -16,7 +19,7 @@ bot.onText(/\/start/, async msg => {
     `Click on this link to authenticate!\n${GITHUB_AUTH_LINK}&state=${uid}`
   )
   // TODO: catch this motherfather
-  await storeUser({ uid, state: 'INIT' })
+  await updateUser({ uid, state: INIT })
 })
 
 bot.onText(/\/login/, msg => {
@@ -26,6 +29,21 @@ bot.onText(/\/login/, msg => {
     uid,
     `Click on this link to authenticate!\n${GITHUB_AUTH_LINK}&state=${uid}`
   )
+})
+
+bot.onText(/\/list/, async msg => {
+  const { id: uid } = msg.chat
+
+  const token = await retrieveToken(uid)
+
+  let res = await fetch(GITHUB_REPO_URL, {
+    headers: new fetch.Headers({
+      Authorization: `TOKEN ${token}`
+    })
+  })
+
+  res = await res.json()
+  console.log(res)
 })
 
 module.exports = bot

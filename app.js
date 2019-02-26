@@ -6,7 +6,11 @@ const bot = require('./bot/bot')
 const { checkConfig } = require('./utils/configure')
 const { storeToken, updateUser } = require('./utils/db')
 
-const { DEFAULT_PORT, GITHUB_ACCESS_TOKEN_LINK } = require('./utils/constants')
+const {
+  DEFAULT_PORT,
+  GITHUB_ACCESS_TOKEN_LINK,
+  AUTHENTICATED
+} = require('./utils/constants')
 
 const app = express()
 
@@ -41,7 +45,7 @@ app.get('/auth', async (req, res) => {
   resp = await resp.json()
 
   storeToken({ uid: state, access_token: resp.access_token })
-  updateUser({ uid: state, state: 'AUTHENTICATED' })
+  updateUser({ uid: state, state: AUTHENTICATED })
 
   bot.sendMessage(state, 'Successfully authenticated!')
 
