@@ -41,11 +41,14 @@ app.get('/auth', async (req, res) => {
   resp = await resp.json()
 
   storeToken({ uid: state, access_token: resp.access_token })
+  updateUser({ uid, state: 'AUTHENTICATED' })
 
   bot.sendMessage(state, 'Successfully authenticated!')
 
   console.log(resp)
-  res.redirect('http://t.me/git_gud_bot')
+
+  // res.redirect('http://t.me/git_gud_bot')
+  res.sendStatus(200)
 })
 
 app.use(function(err, req, res, next) {

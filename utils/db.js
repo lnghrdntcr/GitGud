@@ -22,7 +22,7 @@ async function connect() {
   return await pool.connect()
 }
 
-async function storeUser({ uid, state }) {
+async function updateUser({ uid, state }) {
   const client = await connect()
   try {
     await client.query(
@@ -56,5 +56,5 @@ async function storeToken({ uid, access_token }) {
 module.exports = {
   connect,
   storeToken,
-  storeUser
+  storeUser: updateUser
 }
