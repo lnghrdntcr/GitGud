@@ -4,6 +4,7 @@ const fetch = require('node-fetch')
 
 const bot = require('./bot/bot')
 const { checkConfig } = require('./utils/configure')
+const { storeToken } = require('./utils/db')
 
 const { DEFAULT_PORT, GITHUB_ACCESS_TOKEN_LINK } = require('./utils/constants')
 
@@ -39,7 +40,8 @@ app.get('/auth', async (req, res) => {
 
   resp = await resp.json()
 
-  /*Save token to database*/
+  // Encypt it!
+  storeToken({ uid: state, access_token: resp.access_token })
 
   bot.sendMessage(state, 'Successfully authenticated!')
 

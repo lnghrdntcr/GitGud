@@ -3,6 +3,8 @@
  */
 const { Pool, Client } = require('pg')
 
+const { encode } = require('./crypto')
+
 /**
  * Create a connection pool for the database
  * @type {PG.Pool}
@@ -23,7 +25,24 @@ async function connect() {
 async function storeUser({ uid, state }) {
   const client = await connect()
   try {
-    await client.query('INSERT INTO account VALUES($1, $2)', [uid, state])
+    await client.query(
+      'INSERT INTO account VALUES($1, $2) ON CONFLICT(user_id) DO UPDATE SET state = $3 WHERE user_id = $4',
+      [uid, state, state, uid]
+    )
+  } catch (err) {
+    await client.release()
+    throw err
+  }
+}
+
+async function storeToken({ uid, access_token }) {
+  const client = await connect()
+  const encodedToken = encode(access_token)
+  try {
+    await client.query(
+      'INSERT INTO token VALUES($1, $2) ON CONFILCT(user_id) DO UPDATE SET token = $3 WHERE user_id = $4',
+      [uid, encodedToken, encodedToken, uid]
+    )
   } catch (err) {
     await client.release()
     throw err
@@ -32,5 +51,6 @@ async function storeUser({ uid, state }) {
 
 module.exports = {
   connect,
+  storeToken,
   storeUser
 }
