@@ -4,7 +4,7 @@ const fetch = require('node-fetch')
 
 const bot = require('./bot/bot')
 const { checkConfig } = require('./utils/configure')
-const { storeToken } = require('./utils/db')
+const { storeToken, updateUser } = require('./utils/db')
 
 const { DEFAULT_PORT, GITHUB_ACCESS_TOKEN_LINK } = require('./utils/constants')
 
@@ -47,7 +47,7 @@ app.get('/auth', async (req, res) => {
 
   console.log(resp)
 
-  // res.redirect('http://t.me/git_gud_bot')
+  //res.redirect('http://t.me/git_gud_bot')
   res.sendStatus(200)
 })
 
