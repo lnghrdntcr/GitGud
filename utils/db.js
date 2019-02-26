@@ -7,7 +7,7 @@ const { encode } = require('./crypto')
 
 /**
  * Create a connection pool for the database
- * @type {PG.Pool}
+ * @type {Pool}
  */
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,

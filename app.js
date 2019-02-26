@@ -40,13 +40,16 @@ app.get('/auth', async (req, res) => {
 
   resp = await resp.json()
 
-  // Encypt it!
   storeToken({ uid: state, access_token: resp.access_token })
 
   bot.sendMessage(state, 'Successfully authenticated!')
 
   console.log(resp)
   res.redirect('http://t.me/git_gud_bot')
+})
+
+app.use(function(err, req, res, next) {
+  res.status(500).send(err.stack)
 })
 
 app.listen(process.env.PORT || DEFAULT_PORT, async () => {
