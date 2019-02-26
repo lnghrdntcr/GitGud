@@ -46,7 +46,7 @@ bot.onText(/\/list/, async msg => {
 
   let response = 'These are the repo you can monitor: \n'
 
-  bot.sendMessage(uid, response + res.map(el => el.name + ',\n'))
+  bot.sendMessage(uid, response + res.map(el => '⚫ ' + el.name))
 })
 
 module.exports = bot
