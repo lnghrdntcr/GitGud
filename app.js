@@ -41,7 +41,7 @@ app.get('/auth', async (req, res) => {
   resp = await resp.json()
 
   storeToken({ uid: state, access_token: resp.access_token })
-  updateUser({ uid, state: 'AUTHENTICATED' })
+  updateUser({ uid: state, state: 'AUTHENTICATED' })
 
   bot.sendMessage(state, 'Successfully authenticated!')
 
