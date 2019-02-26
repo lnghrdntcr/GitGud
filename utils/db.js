@@ -64,7 +64,7 @@ async function retrieveToken(uid) {
   try {
     const { rows: token } = await client.query(
       'SELECT token from token where user_id = $1 LIMIT 1',
-      [uid]
+      [uid.toString()]
     )
     // TODO: If the user doesn't exist, throw an error
     return decode(token)
