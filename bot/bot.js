@@ -43,6 +43,11 @@ bot.onText(/\/list/, async msg => {
   })
 
   res = await res.json()
+
+  let response = 'These are the repo you can monitor: \n'
+
+  bot.sendMessage(uid, response + res.map(el => el.name + '\n'))
+
   console.log(res)
 })
 
