@@ -27,7 +27,7 @@ async function storeUser({ uid, state }) {
   try {
     await client.query(
       'INSERT INTO account VALUES($1, $2) ON CONFLICT(user_id) DO UPDATE SET state = $3',
-      [uid, state, state, uid]
+      [uid, state, state]
     )
 
     await client.release()
@@ -43,7 +43,7 @@ async function storeToken({ uid, access_token }) {
   try {
     await client.query(
       'INSERT INTO token VALUES($1, $2) ON CONFILCT(user_id) DO UPDATE SET token = $3',
-      [uid, encodedToken, encodedToken, uid]
+      [uid, encodedToken, encodedToken]
     )
 
     await client.release()
