@@ -26,7 +26,7 @@ async function storeUser({ uid, state }) {
   const client = await connect()
   try {
     await client.query(
-      'INSERT INTO account VALUES($1, $2) ON CONFLICT(user_id) DO UPDATE SET state = $3 WHERE user_id = $4',
+      'INSERT INTO account VALUES($1, $2) ON CONFLICT(user_id) DO UPDATE account SET state = $3 WHERE user_id = $4',
       [uid, state, state, uid]
     )
   } catch (err) {
@@ -40,7 +40,7 @@ async function storeToken({ uid, access_token }) {
   const encodedToken = encode(access_token)
   try {
     await client.query(
-      'INSERT INTO token VALUES($1, $2) ON CONFILCT(user_id) DO UPDATE SET token = $3 WHERE user_id = $4',
+      'INSERT INTO token VALUES($1, $2) ON CONFILCT(user_id) DO UPDATE token SET token = $3 WHERE user_id = $4',
       [uid, encodedToken, encodedToken, uid]
     )
   } catch (err) {
