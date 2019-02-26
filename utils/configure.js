@@ -52,7 +52,7 @@ async function setUpDb() {
     )
 
     await client.query(
-      'CREATE TABLE IF NOT EXISTS token(user_id varchar(30) PRIMARY KEY, token VARCHAR(100) NOT NULL)'
+      'CREATE TABLE IF NOT EXISTS token(user_id varchar(30) PRIMARY KEY, token json NOT NULL)'
     )
 
     await client.query('END')
