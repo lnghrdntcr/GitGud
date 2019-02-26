@@ -26,6 +26,7 @@ function encode(msg) {
  */
 
 function decode(msg) {
+  console.log(typeof msg)
   const iv = Buffer.from(msg.iv, 'hex')
   const encryptedText = Buffer.from(msg.encryptedData, 'hex')
   let decipher = crypto.createDecipheriv(

@@ -68,7 +68,7 @@ async function retrieveToken(uid) {
       [uid.toString()]
     )
     // TODO: If the user doesn't exist, throw an error
-    console.log(token)
+    console.log(token[0])
     return decode(token[0])
   } catch (err) {
     await client.release()
