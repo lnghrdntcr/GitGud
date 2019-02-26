@@ -59,6 +59,7 @@ async function storeToken({ uid, access_token }) {
  * @returns The decrypted token
  */
 async function retrieveToken(uid) {
+  console.log('Called with uid ' + uid)
   const client = await connect()
 
   try {
@@ -67,6 +68,7 @@ async function retrieveToken(uid) {
       [uid.toString()]
     )
     // TODO: If the user doesn't exist, throw an error
+    console.log(token)
     return decode(token)
   } catch (err) {
     await client.release()
