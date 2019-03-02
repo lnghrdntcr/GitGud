@@ -12,14 +12,14 @@ bot.setWebHook(process.env.WEBHOOK_URL)
 bot.onText(/\/start/, async msg => {
   const { id: uid } = msg.chat
 
-  // TODO: save user into the database upon first login
-
   bot.sendMessage(
     uid,
     `Click on this link to authenticate!\n${GITHUB_AUTH_LINK}&state=${uid}`
   )
   // TODO: catch this motherfather
-  await updateUser({ uid, state: INIT })
+  try {
+    await updateUser({ uid, state: INIT })
+  } catch(err){}
 })
 
 bot.onText(/\/login/, msg => {
@@ -34,19 +34,26 @@ bot.onText(/\/login/, msg => {
 bot.onText(/\/list/, async msg => {
   const { id: uid } = msg.chat
 
-  const token = await retrieveToken(uid)
+  try {
 
-  let res = await fetch(GITHUB_REPO_URL, {
-    headers: new fetch.Headers({
-      Authorization: `TOKEN ${token}`
+    const token = await retrieveToken(uid)
+    
+    let res = await fetch(GITHUB_REPO_URL, {
+      headers: new fetch.Headers({
+        Authorization: `TOKEN ${token}`
+      })
     })
-  })
+    
+    res = await res.json()
+    
+    let response = 'These are the repo you can monitor: \n'
+    
+    bot.sendMessage(uid, response + res.map(el => '⚫ ' + el.name))
 
-  res = await res.json()
+  }catch(err) {
+    bot.sendMessage(uid, 'There was a problem listing your repositories, try /login again!')
+  }
 
-  let response = 'These are the repo you can monitor: \n'
-
-  bot.sendMessage(uid, response + res.map(el => '⚫ ' + el.name))
 })
 
 module.exports = bot
