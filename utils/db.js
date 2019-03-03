@@ -43,7 +43,7 @@ async function storeToken({ uid, access_token, api_url }) {
 
   try {
     await client.query(
-      'INSERT INTO token VALUES($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET token = $$',
+      'INSERT INTO token VALUES($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET token = $4',
       [uid, encodedToken, api_url, encodedToken]
     )
 
