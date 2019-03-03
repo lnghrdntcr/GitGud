@@ -37,13 +37,14 @@ async function updateUser({ uid, state }) {
   }
 }
 
-async function storeToken({ uid, access_token }) {
+async function storeToken({ uid, access_token, api_url }) {
   const client = await connect()
   const encodedToken = encode(access_token)
+
   try {
     await client.query(
-      'INSERT INTO token VALUES($1, $2) ON CONFLICT (user_id) DO UPDATE SET token = $3',
-      [uid, encodedToken, encodedToken]
+      'INSERT INTO token VALUES($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET token = $$',
+      [uid, encodedToken, api_url, encodedToken]
     )
 
     await client.release()
@@ -78,9 +79,22 @@ async function retrieveToken(uid) {
   }
 }
 
+async function saveRepo({ uid, repoName }) {
+  const client = await connect()
+
+  try {
+    await client.query('INSERT INTO repo VALUES($1, $2)', [uid, repoName])
+    await client.release()
+  } catch (err) {
+    await client.release()
+    throw err
+  }
+}
+
 module.exports = {
   connect,
   storeToken,
   updateUser,
-  retrieveToken
+  retrieveToken,
+  saveRepo
 }

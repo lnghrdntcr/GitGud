@@ -5,6 +5,7 @@ const fetch = require('node-fetch')
 const bot = require('./bot/bot')
 const { checkConfig } = require('./utils/configure')
 const { storeToken, updateUser } = require('./utils/db')
+const { getApiURLByToken } = require('./api/github')
 
 const {
   DEFAULT_PORT,
@@ -44,7 +45,9 @@ app.get('/auth', async (req, res) => {
 
   resp = await resp.json()
 
-  storeToken({ uid: state, access_token: resp.access_token })
+  const api_url = await getApiURLByToken(resp.access_token)
+
+  storeToken({ uid: state, access_token: resp.access_token, api_url })
   updateUser({ uid: state, state: AUTHENTICATED })
 
   bot.sendMessage(state, 'Successfully authenticated!')

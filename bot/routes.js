@@ -1,8 +1,9 @@
 const fetch = require('node-fetch')
 
 const { GITHUB_AUTH_LINK } = require('../utils/constants')
-const { updateUser, retrieveToken } = require('../utils/db')
+const { updateUser, retrieveToken, saveRepo } = require('../utils/db')
 const { INIT, GITHUB_REPO_URL } = require('../utils/constants')
+const { createWebHook } = require('../api/github')
 
 const onStart = bot => async msg => {
   const { id: uid } = msg.chat
@@ -74,12 +75,26 @@ const onList = bot => async msg => {
   }
 }
 
-const onCallbackQuery = bot => answer => {
+const onCallbackQuery = bot => async answer => {
   const [uid, repoName, actionStatus] = answer.data.split('#')
-
   console.log(uid + ' => ' + repoName + ' => ' + actionStatus)
 
-  bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
+  try {
+    const token = await retrieveToken(uid)
+
+    await saveRepo({ uid, repoName })
+
+    await createWebHook({ token, repoName })
+
+    bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
+  } catch (err) {
+    console.log(err)
+    if (!err.message.includes('duplicate'))
+      bot.sendMessage(
+        uid,
+        'There was a problem activating the monitoring of your repo, please try again later'
+      )
+  }
 }
 
 module.exports = {
