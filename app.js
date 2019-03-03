@@ -64,7 +64,7 @@ app.post('/hooks/:uid', (req, res) => {
   const { uid } = req.params
 
   bot.sendMessage(uid, 'OH MY GOD IT WORKS')
-  bot.sendMessage(uid, req.head_commit.message)
+  bot.sendMessage(uid, req.body.head_commit.message)
 
   res.sendStatus(200)
 })
