@@ -63,8 +63,6 @@ const onList = bot => async msg => {
         }
       }
     )
-
-    // onRepoMonitoringAnswer(bot)(answer)
   } catch (err) {
     if (err.message === 'AUTH_NEEDED')
       bot.sendMessage(uid, "You're not authenticated, /login!")
@@ -79,7 +77,7 @@ const onList = bot => async msg => {
 const onCallbackQuery = bot => answer => {
   const [uid, repoName, actionStatus] = answer.data.split('#')
 
-  console.log(uid + ' => ' + repoName)
+  console.log(uid + ' => ' + repoName + ' => ' + actionStatus)
 
   bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
 }
