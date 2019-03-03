@@ -67,7 +67,10 @@ async function retrieveToken(uid) {
       'SELECT token from token where user_id = $1 LIMIT 1',
       [uid.toString()]
     )
+
     // TODO: If the user doesn't exist, throw an error
+    if (token.length === 0) throw new Error('AUTH_NEEDED')
+
     return decode(token[0].token)
   } catch (err) {
     await client.release()

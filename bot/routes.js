@@ -44,17 +44,38 @@ const onList = bot => async msg => {
 
     res = await res.json()
 
-    let response = 'These are the repo you can monitor: \n'
+    bot.sendMessage(
+      uid,
+      'These are the repos you can monitor, click on one (or multiple of them) to monitor them!',
+      // ADD INLINEKEYBOARD
+      {
+        reply_markup: {
+          keyboard: [
+            res.map(el => {
+              return {
+                text: el.name,
+                callback_data: `${uid}#${el.name}`
+              }
+            })
+          ]
+        }
+      }
+    )
 
-    bot.sendMessage(
-      uid,
-      response + res.map(el => '⚫ ' + el.name.replace(',', '') + '\n')
-    )
+    // let response = 'These are the repo you can monitor: \n'
+
+    // bot.sendMessage(
+    //   uid,
+    //   response + res.map(el => '⚫ ' + el.name.replace(',', '') + '\n')
+    // )
   } catch (err) {
-    bot.sendMessage(
-      uid,
-      'There was a problem listing your repositories, try /login again!'
-    )
+    if (error.message === 'AUTH_NEEDED')
+      bot.sendMessage(uid, "You're not authenticated, /login!")
+    else
+      bot.sendMessage(
+        uid,
+        'There was a problem listing your repositories, try /login again!'
+      )
   }
 }
 
