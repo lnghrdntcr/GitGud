@@ -44,7 +44,7 @@ const onList = bot => async msg => {
 
     res = await res.json()
 
-    bot.sendMessage(
+    const answer = await bot.sendMessage(
       uid,
       'These are the repos you can monitor, click on one (or multiple of them) to monitor them!',
       // ADD INLINEKEYBOARD
@@ -63,6 +63,8 @@ const onList = bot => async msg => {
         }
       }
     )
+
+    onRepoMonitoringAnswer(bot)(answer)
   } catch (err) {
     if (error.message === 'AUTH_NEEDED')
       bot.sendMessage(uid, "You're not authenticated, /login!")
@@ -78,6 +80,14 @@ const onCallbackQuery = bot => answer => {
   const [uid, repoName, actionStatus] = answer.data.split('#')
 
   console.log(uid + ' => ' + repoName)
+
+  bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
+}
+
+const onRepoMonitoringAnswer = bot => answer => {
+  const [uid, repoName, actionStatus] = answer.data.split('#')
+
+  console.log(uid + ' => ' + repoName + ' => ' + actionStatus)
 
   bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
 }
