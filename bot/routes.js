@@ -55,7 +55,7 @@ const onList = bot => async msg => {
               return [
                 {
                   text: el.name,
-                  callback_data: `${uid}#${el.name}`
+                  callback_data: `${uid}#${el.name}#monitor`
                 }
               ]
             })
@@ -63,13 +63,6 @@ const onList = bot => async msg => {
         }
       }
     )
-
-    // let response = 'These are the repo you can monitor: \n'
-
-    // bot.sendMessage(
-    //   uid,
-    //   response + res.map(el => '⚫ ' + el.name.replace(',', '') + '\n')
-    // )
   } catch (err) {
     if (error.message === 'AUTH_NEEDED')
       bot.sendMessage(uid, "You're not authenticated, /login!")
@@ -81,8 +74,17 @@ const onList = bot => async msg => {
   }
 }
 
+const onCallbackQuery = bot => answer => {
+  const [uid, repoName, actionStatus] = answer.data.split('#')
+
+  console.log(uid + ' => ' + repoName)
+
+  bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
+}
+
 module.exports = {
   onStart,
   onLogin,
-  onList
+  onList,
+  onCallbackQuery
 }
