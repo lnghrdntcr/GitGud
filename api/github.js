@@ -7,6 +7,8 @@ async function createWebHook({ api_url, repoName, uid }) {
   const repoHooksURL =
     api_url.replace('users', 'repos') + '/' + repoName + '/hooks'
 
+  console.log(repoHooksURL)
+
   let res = await fetch(repoHooksURL, {
     method: 'POST',
     body: {
