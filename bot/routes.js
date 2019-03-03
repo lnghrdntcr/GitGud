@@ -87,6 +87,7 @@ const onCallbackQuery = bot => async answer => {
     await saveRepo({ uid, repoName })
 
     bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
+    return
   } catch (err) {
     console.log(err)
     if (!err.message.includes('duplicate'))
@@ -94,6 +95,7 @@ const onCallbackQuery = bot => async answer => {
         uid,
         'There was a problem activating the monitoring of your repo, please try again later'
       )
+    return
   }
 }
 
