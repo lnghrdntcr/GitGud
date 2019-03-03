@@ -14,9 +14,11 @@ const {
 } = require('./utils/constants')
 
 const formatCommits = (repoName, commits) => {
-  let message = `<b>${repoName}</b>:\n`
+  let message = `*${repoName}*:\n`
   commits.forEach(el => {
-    message += `${el.committer.name}(${el.committer.username}): ${el.message}\n`
+    message += `${el.committer.name}(_${el.committer.username}_): ${
+      el.message
+    }\n`
   })
   return message
 }
@@ -60,21 +62,20 @@ app.get('/auth', async (req, res) => {
 
   bot.sendMessage(state, 'Successfully authenticated!')
 
-  console.log(resp)
-
   //res.redirect('http://t.me/git_gud_bot')
   res.sendStatus(200)
 })
 
 app.post('/hooks/:uid', (req, res) => {
-  console.log(req)
-
   const { uid } = req.params
 
   bot.sendMessage(
     uid,
     // 'The commit message was "' + req.body.head_commit.message + '"'
-    formatCommits(req.body.repository.full_name, req.body.commits)
+    formatCommits(req.body.repository.full_name, req.body.commits),
+    {
+      parse_mode: 'Markdown'
+    }
   )
 
   res.sendStatus(200)
