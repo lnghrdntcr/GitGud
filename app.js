@@ -13,6 +13,14 @@ const {
   AUTHENTICATED
 } = require('./utils/constants')
 
+const formatCommits = (repoName, commits) => {
+  let message = `<b>${repoName}</b>:\n`
+  commits.forEach(el => {
+    message += `${el.committer.name}(${el.committer.username}): ${el.message}\n`
+  })
+  return message
+}
+
 const app = express()
 
 app.use(bodyParser.json())
@@ -63,8 +71,11 @@ app.post('/hooks/:uid', (req, res) => {
 
   const { uid } = req.params
 
-  bot.sendMessage(uid, 'OH MY GOD IT WORKS')
-  bot.sendMessage(uid, req.body.head_commit.message)
+  bot.sendMessage(
+    uid,
+    // 'The commit message was "' + req.body.head_commit.message + '"'
+    formatCommits(req.body.repository.full_name, req.body.commits)
+  )
 
   res.sendStatus(200)
 })
