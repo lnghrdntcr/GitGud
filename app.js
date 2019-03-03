@@ -59,10 +59,14 @@ app.get('/auth', async (req, res) => {
 })
 
 app.post('/hooks/:uid', (req, res) => {
+  console.log(req)
+
   const { uid } = req.params
 
   bot.sendMessage(uid, 'OH MY GOD IT WORKS')
   bot.sendMessage(uid, req)
+
+  res.sendStatus(200)
 })
 
 app.use(function(err, req, res, next) {
