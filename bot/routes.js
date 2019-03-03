@@ -3,7 +3,7 @@ const fetch = require('node-fetch')
 const { GITHUB_AUTH_LINK } = require('../utils/constants')
 const { updateUser, retrieveToken, saveRepo } = require('../utils/db')
 const { INIT, GITHUB_REPO_URL } = require('../utils/constants')
-const { createWebHook } = require('../api/github')
+const { createWebHook, getApiURLByToken } = require('../api/github')
 
 const onStart = bot => async msg => {
   const { id: uid } = msg.chat
@@ -81,10 +81,11 @@ const onCallbackQuery = bot => async answer => {
 
   try {
     const token = await retrieveToken(uid)
+    const api_url = await getApiURLByToken(token)
 
     await saveRepo({ uid, repoName })
 
-    await createWebHook({ token, repoName, uid })
+    await createWebHook({ api_url, repoName, uid })
 
     bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
   } catch (err) {
