@@ -58,6 +58,13 @@ app.get('/auth', async (req, res) => {
   res.sendStatus(200)
 })
 
+app.post('/hooks/:uid', (req, res) => {
+  const { uid } = req.params
+
+  bot.sendMessage(uid, 'OH MY GOD IT WORKS')
+  bot.sendMessage(uid, req)
+})
+
 app.use(function(err, req, res, next) {
   res.status(500).send(err.stack)
 })

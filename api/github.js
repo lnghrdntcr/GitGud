@@ -1,8 +1,25 @@
 const fetch = require('node-fetch')
-const { GITHUB_BASE_URL } = require('../utils/constants')
+const { GITHUB_BASE_URL, HEROKU_HOOKS_URL } = require('../utils/constants')
 
-async function createWebHook({ token, repoName }) {
+async function createWebHook({ api_url, repoName, uid }) {
   // TODO: Create a webhook
+
+  const repoHooksURL =
+    api_url.replace('users', 'repos') + '/' + repoName + '/hooks'
+
+  let res = await fetch(repoHooksURL, {
+    method: 'POST',
+    body: {
+      name: 'web',
+      config: {
+        url: `${HEROKU_HOOKS_URL}/${uid}`,
+        content_type: 'json'
+      }
+    }
+  })
+
+  res = await res.json()
+  console.log(res)
 }
 
 async function getApiURLByToken(token) {

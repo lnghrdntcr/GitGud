@@ -3,6 +3,8 @@ const GITHUB_AUTH_LINK = `https://github.com/login/oauth/authorize?scope=user,em
   process.env.GITHUB_CLIENT_ID
 }`
 
+const HEROKU_HOOKS_URL = `${process.env.BASE_URL}/hooks`
+
 const GITHUB_ACCESS_TOKEN_LINK = 'https://github.com/login/oauth/access_token'
 
 const GITHUB_BASE_URL = 'https://api.github.com'
@@ -20,5 +22,6 @@ module.exports = {
   AUTHENTICATED,
   MONITORING,
   GITHUB_REPO_URL,
-  GITHUB_BASE_URL
+  GITHUB_BASE_URL,
+  HEROKU_HOOKS_URL
 }
