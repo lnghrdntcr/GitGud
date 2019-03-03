@@ -51,7 +51,7 @@ const onList = bot => async msg => {
       {
         reply_markup: {
           keyboard: [
-            res.map(el => {
+            ...res.map(el => {
               return {
                 text: el.name,
                 callback_data: `${uid}#${el.name}`
