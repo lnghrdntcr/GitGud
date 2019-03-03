@@ -50,7 +50,7 @@ const onList = bot => async msg => {
       // ADD INLINEKEYBOARD
       {
         reply_markup: {
-          keyboard: [
+          inline_keyboard: [
             ...res.map(el => {
               return [
                 {
@@ -64,9 +64,9 @@ const onList = bot => async msg => {
       }
     )
 
-    onRepoMonitoringAnswer(bot)(answer)
+    // onRepoMonitoringAnswer(bot)(answer)
   } catch (err) {
-    if (error.message === 'AUTH_NEEDED')
+    if (err.message === 'AUTH_NEEDED')
       bot.sendMessage(uid, "You're not authenticated, /login!")
     else
       bot.sendMessage(
@@ -80,14 +80,6 @@ const onCallbackQuery = bot => answer => {
   const [uid, repoName, actionStatus] = answer.data.split('#')
 
   console.log(uid + ' => ' + repoName)
-
-  bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
-}
-
-const onRepoMonitoringAnswer = bot => answer => {
-  const [uid, repoName, actionStatus] = answer.data.split('#')
-
-  console.log(uid + ' => ' + repoName + ' => ' + actionStatus)
 
   bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
 }
