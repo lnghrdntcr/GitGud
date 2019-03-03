@@ -2,19 +2,15 @@ const fetch = require('node-fetch')
 const { GITHUB_BASE_URL, HEROKU_HOOKS_URL } = require('../utils/constants')
 
 async function createWebHook({ token, api_url, repoName, uid }) {
-  // TODO: Create a webhook
-
   const repoHooksURL =
     api_url.replace('users', 'repos') + '/' + repoName + '/hooks'
-
-  console.log(repoHooksURL)
 
   let res = await fetch(repoHooksURL, {
     method: 'POST',
     headers: new fetch.Headers({
       Authorization: `token ${token}`
     }),
-    body: {
+    body: JSON.stringify({
       name: 'web',
       active: true,
       events: ['push', 'pull_request'],
@@ -22,9 +18,9 @@ async function createWebHook({ token, api_url, repoName, uid }) {
         url: `${HEROKU_HOOKS_URL}/${uid}`,
         content_type: 'json'
       }
-    }
+    })
   })
-
+  if (res.status > 299) throw new Error()
   res = await res.json()
   console.log(res)
 }
