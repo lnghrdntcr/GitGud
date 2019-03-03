@@ -16,6 +16,8 @@ async function createWebHook({ token, api_url, repoName, uid }) {
     }),
     body: {
       name: 'web',
+      active: true,
+      events: ['push', 'pull_request'],
       config: {
         url: `${HEROKU_HOOKS_URL}/${uid}`,
         content_type: 'json'
