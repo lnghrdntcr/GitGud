@@ -20,7 +20,6 @@ async function createWebHook({ token, api_url, repoName, uid }) {
       }
     })
   })
-  if (res.status > 299) throw new Error()
   res = await res.json()
   console.log(res)
 }
