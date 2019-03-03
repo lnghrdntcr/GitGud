@@ -16,6 +16,11 @@ const app = express()
 
 app.use(bodyParser.json())
 
+app.use((req, res, next) => {
+  console.log(req)
+  next()
+})
+
 app.post('/' + process.env.BOT_TOKEN, (req, res) => {
   bot.processUpdate(req.body)
   res.sendStatus(200)
