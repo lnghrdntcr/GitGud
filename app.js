@@ -4,24 +4,15 @@ const fetch = require('node-fetch')
 
 const bot = require('./bot/bot')
 const { checkConfig } = require('./utils/configure')
-const { storeToken, updateUser } = require('./utils/db')
+const { storeToken, updateUser } = require('./api/db')
 const { getApiURLByToken } = require('./api/github')
+const { formatCommits } = require('./utils/utils')
 
 const {
   DEFAULT_PORT,
   GITHUB_ACCESS_TOKEN_LINK,
   AUTHENTICATED
 } = require('./utils/constants')
-
-const formatCommits = (repoName, commits) => {
-  let message = `*${repoName}*:\n`
-  commits.forEach(el => {
-    message += `${el.committer.name}(_${el.committer.username}_): ${
-      el.message
-    }\n`
-  })
-  return message
-}
 
 const app = express()
 
@@ -60,9 +51,11 @@ app.get('/auth', async (req, res) => {
   storeToken({ uid: state, access_token: resp.access_token, api_url })
   updateUser({ uid: state, state: AUTHENTICATED })
 
-  bot.sendMessage(state, 'Successfully authenticated!')
+  bot.sendMessage(
+    state,
+    'Successfully authenticated! Now write /list to list all the repo you can monitor'
+  )
 
-  //res.redirect('http://t.me/git_gud_bot')
   res.sendStatus(200)
 })
 
@@ -71,7 +64,6 @@ app.post('/hooks/:uid', (req, res) => {
 
   bot.sendMessage(
     uid,
-    // 'The commit message was "' + req.body.head_commit.message + '"'
     formatCommits(req.body.repository.full_name, req.body.commits),
     {
       parse_mode: 'Markdown'

@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const { connect } = require('./db')
+const { connect } = require('../api/db')
 
 const TELEGRAM_BOT_URL = `https://api.telegram.org/bot${process.env.BOT_TOKEN}`
 

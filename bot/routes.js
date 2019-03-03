@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 
 const { GITHUB_AUTH_LINK } = require('../utils/constants')
-const { updateUser, retrieveToken, saveRepo } = require('../utils/db')
+const { updateUser, retrieveToken, saveRepo } = require('../api/db')
 const { INIT, GITHUB_REPO_URL } = require('../utils/constants')
 const { createWebHook, getApiURLByToken } = require('../api/github')
 
