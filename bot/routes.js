@@ -84,7 +84,7 @@ const onUnmonitor = bot => async msg => {
 
   try {
     const repos = await retrieveRepos(uid)
-    bot.sendMessage(uid, repos.reduce(acc, el => acc + ' ' + el))
+    bot.sendMessage(uid, repos.reduce((acc, el) => acc + ' ' + el))
   } catch (err) {
     console.log(err)
   }
