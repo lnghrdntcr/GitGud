@@ -96,7 +96,7 @@ async function updateHook({ uid, repoName, hook_id }) {
 
   try {
     await client.query(
-      'UPDATE repo SET hook_id = $1 WHERE (uid, repo_name) = ($2, $3)',
+      'UPDATE repo SET hook_id = $1 WHERE (user_id, repo_name) = ($2, $3)',
       [hook_id, uid, repoName]
     )
     await client.release()
