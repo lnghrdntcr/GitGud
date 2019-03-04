@@ -55,6 +55,8 @@ const authUser = async (req, res) => {
 const onGithubEvent = (req, res) => {
   const { uid } = req.params
 
+  console.log('RECEIVED GITHUB EVENT')
+
   bot.sendMessage(
     uid,
     formatCommits(req.body.repository.full_name, req.body.commits),
