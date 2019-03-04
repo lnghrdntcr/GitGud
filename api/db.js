@@ -91,10 +91,31 @@ async function saveRepo({ uid, repoName }) {
   }
 }
 
+async function retrieveRepos(uid) {
+  const client = await connect()
+
+  try {
+    const { rows: repos } = await client.query(
+      'SELECT repo_name FROM repo as r JOIN account as a ON r.user_id = a.user_id WHERE user_id = $1',
+      [uid]
+    )
+
+    if (repos.length === 0) throw new Error('AUTH_NEEDED')
+
+    await client.release()
+    console.log(repos)
+    return repos.repo_name
+  } catch (err) {
+    await client.release()
+    throw err
+  }
+}
+
 module.exports = {
   connect,
   storeToken,
   updateUser,
   retrieveToken,
-  saveRepo
+  saveRepo,
+  retrieveRepos
 }

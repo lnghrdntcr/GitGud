@@ -1,5 +1,11 @@
 const Bot = require('node-telegram-bot-api')
-const { onStart, onLogin, onList, onCallbackQuery } = require('./routes')
+const {
+  onStart,
+  onLogin,
+  onList,
+  onUnmonitor,
+  onCallbackQuery
+} = require('./routes')
 
 const bot = new Bot(process.env.BOT_TOKEN)
 
@@ -10,6 +16,8 @@ bot.onText(/\/start/, onStart(bot))
 bot.onText(/\/login/, onLogin(bot))
 
 bot.onText(/\/list/, onList(bot))
+
+bot.onText(/\/unmonitor/, onUnmonitor(bot))
 
 bot.on('callback_query', onCallbackQuery(bot))
 

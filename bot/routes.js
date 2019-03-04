@@ -1,7 +1,12 @@
 const fetch = require('node-fetch')
 
 const { GITHUB_AUTH_LINK } = require('../utils/constants')
-const { updateUser, retrieveToken, saveRepo } = require('../api/db')
+const {
+  updateUser,
+  retrieveToken,
+  saveRepo,
+  retrieveRepos
+} = require('../api/db')
 const { INIT, GITHUB_REPO_URL } = require('../utils/constants')
 const { createWebHook, getApiURLByToken } = require('../api/github')
 
@@ -12,6 +17,7 @@ const onStart = bot => async msg => {
     uid,
     `Click on this link to authenticate!\n${GITHUB_AUTH_LINK}&state=${uid}`
   )
+
   try {
     await updateUser({ uid, state: INIT })
   } catch (err) {
@@ -24,7 +30,6 @@ const onStart = bot => async msg => {
 
 const onLogin = bot => msg => {
   const { id: uid } = msg.chat
-
   bot.sendMessage(
     uid,
     `Click on this link to authenticate!\n${GITHUB_AUTH_LINK}&state=${uid}`
@@ -45,10 +50,9 @@ const onList = bot => async msg => {
 
     res = await res.json()
 
-    const answer = await bot.sendMessage(
+    bot.sendMessage(
       uid,
-      'These are the repos you can monitor, click on one (or multiple of them) to monitor them!',
-      // ADD INLINEKEYBOARD
+      'These are the repos you can monitor, click on one (or multiple of them) to be notified when a push occurs!',
       {
         reply_markup: {
           inline_keyboard: [
@@ -72,6 +76,16 @@ const onList = bot => async msg => {
         uid,
         'There was a problem listing your repositories, try /login again!'
       )
+  }
+}
+
+const onUnmonitor = bot => async msg => {
+  const { id: uid } = msg.chat
+
+  try {
+    const repos = await retrieveRepos(uid)
+  } catch (err) {
+    console.log(err)
   }
 }
 
@@ -103,5 +117,6 @@ module.exports = {
   onStart,
   onLogin,
   onList,
+  onUnmonitor,
   onCallbackQuery
 }
