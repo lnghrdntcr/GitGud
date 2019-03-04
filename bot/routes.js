@@ -111,25 +111,27 @@ const onCallbackQuery = bot => async answer => {
   const [uid, repoName, actionStatus] = answer.data.split('#')
   console.log(uid + ' => ' + repoName + ' => ' + actionStatus)
 
-  if (actionStatus === 'unmonitor') return
+  if (actionStatus === 'monitor') {
+    try {
+      const token = await retrieveToken(uid)
+      const api_url = await getApiURLByToken(token)
 
-  try {
-    const token = await retrieveToken(uid)
-    const api_url = await getApiURLByToken(token)
+      await createWebHook({ token, api_url, repoName, uid })
+      await saveRepo({ uid, repoName })
 
-    await createWebHook({ token, api_url, repoName, uid })
-    await saveRepo({ uid, repoName })
-
-    bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
-    return
-  } catch (err) {
-    console.log(err)
-    if (!err.message.includes('duplicate'))
-      bot.sendMessage(
-        uid,
-        'There was a problem activating the monitoring of your repo, please try again later'
-      )
-    return
+      bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
+      return
+    } catch (err) {
+      console.log(err)
+      if (!err.message.includes('duplicate'))
+        bot.sendMessage(
+          uid,
+          'There was a problem activating the monitoring of your repo, please try again later'
+        )
+      return
+    }
+  } else {
+    // unmonitor
   }
 }
 

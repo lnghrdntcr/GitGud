@@ -13,7 +13,7 @@ async function createWebHook({ token, api_url, repoName, uid }) {
     body: JSON.stringify({
       name: 'web',
       active: true,
-      events: ['push', 'pull_request'],
+      events: ['push'],
       config: {
         url: `${HEROKU_HOOKS_URL}/${uid}`,
         content_type: 'json'
@@ -21,7 +21,9 @@ async function createWebHook({ token, api_url, repoName, uid }) {
     })
   })
   res = await res.json()
-  console.log(res)
+  //TODO: save webhook id!
+
+  console.log(res.id)
 }
 
 async function getApiURLByToken(token) {
