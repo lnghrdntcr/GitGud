@@ -1,5 +1,6 @@
 const fetch = require('node-fetch')
 const { GITHUB_BASE_URL, HEROKU_HOOKS_URL } = require('../utils/constants')
+const { updateHook } = require('./db')
 
 async function createWebHook({ token, api_url, repoName, uid }) {
   const repoHooksURL =
