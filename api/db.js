@@ -95,10 +95,11 @@ async function updateHook({ uid, repoName, hook_id }) {
   const client = await connect()
 
   try {
-    await client.query(
-      'UPDATE repo SET hook_id = $1 WHERE (user_id, repo_name) = ($2, $3)',
+    const { rows } = await client.query(
+      'UPDATE repo SET hook_id = $1 WHERE (user_id, repo_name) = ($2, $3) RETURNING *',
       [hook_id, uid, repoName]
     )
+    console.log(rows)
     await client.release()
   } catch (err) {
     await client.release()

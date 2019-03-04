@@ -22,6 +22,7 @@ async function createWebHook({ token, api_url, repoName, uid }) {
     })
   })
   res = await res.json()
+  console.log(res)
   await updateHook({ uid, repoName, hook_id: res.id })
 }
 
