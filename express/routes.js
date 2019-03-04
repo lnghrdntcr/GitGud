@@ -57,17 +57,13 @@ const onGithubEvent = (req, res) => {
 
   console.log('RECEIVED GITHUB EVENT')
 
-  try {
-    bot.sendMessage(
-      uid,
-      formatCommits(req.body.repository.full_name, req.body.commits),
-      {
-        parse_mode: 'Markdown'
-      }
-    )
-  } catch (err) {
-    console.log(err)
-  }
+  bot.sendMessage(
+    uid,
+    formatCommits(req.body.repository.full_name, req.body.commits),
+    {
+      parse_mode: 'Markdown'
+    }
+  )
 
   res.sendStatus(200)
 }

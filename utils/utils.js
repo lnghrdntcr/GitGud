@@ -7,3 +7,7 @@ const formatCommits = (repoName, commits) => {
   })
   return message
 }
+
+module.exports = {
+  formatCommits
+}
