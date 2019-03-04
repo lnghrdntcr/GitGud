@@ -116,8 +116,8 @@ const onCallbackQuery = bot => async answer => {
       const token = await retrieveToken(uid)
       const api_url = await getApiURLByToken(token)
 
-      await createWebHook({ token, api_url, repoName, uid })
       await saveRepo({ uid, repoName })
+      await createWebHook({ token, api_url, repoName, uid })
 
       bot.sendMessage(uid, 'Ok! Monitoring ' + repoName)
       return
