@@ -84,7 +84,24 @@ const onUnmonitor = bot => async msg => {
 
   try {
     const repos = await retrieveRepos(uid)
-    bot.sendMessage(uid, repos.reduce((acc, el) => acc + ' ' + el))
+    bot.sendMessage(
+      uid,
+      'These are the repos you can monitor, click on one (or multiple of them) to be notified when a push occurs!',
+      {
+        reply_markup: {
+          inline_keyboard: [
+            ...repos.map(repo => {
+              return [
+                {
+                  text: repo,
+                  callback_data: `${uid}#${repo}#unmonitor`
+                }
+              ]
+            })
+          ]
+        }
+      }
+    )
   } catch (err) {
     console.log(err)
   }
@@ -93,6 +110,8 @@ const onUnmonitor = bot => async msg => {
 const onCallbackQuery = bot => async answer => {
   const [uid, repoName, actionStatus] = answer.data.split('#')
   console.log(uid + ' => ' + repoName + ' => ' + actionStatus)
+
+  if (actionStatus === 'unmonitor') return
 
   try {
     const token = await retrieveToken(uid)
