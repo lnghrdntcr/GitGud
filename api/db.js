@@ -96,7 +96,7 @@ async function retrieveRepos(uid) {
 
   try {
     const { rows: repos } = await client.query(
-      'SELECT repo_name FROM repo as r JOIN account as a ON r.user_id = a.user_id WHERE user_id = $1',
+      'SELECT repo_name FROM repo as r JOIN account as a ON r.user_id = a.user_id WHERE a.user_id = $1',
       [uid]
     )
 
