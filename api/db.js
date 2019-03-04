@@ -104,7 +104,7 @@ async function retrieveRepos(uid) {
 
     await client.release()
     console.log(repos)
-    return repos.repo_name
+    return repos.map(repo => repo.repo_name)
   } catch (err) {
     await client.release()
     throw err
