@@ -21,9 +21,7 @@ async function createWebHook({ token, api_url, repoName, uid }) {
     })
   })
   res = await res.json()
-  //TODO: save webhook id!
-
-  console.log(res.id)
+  await updateHook({ uid, repoName, hook_id: res.id })
 }
 
 async function getApiURLByToken(token) {

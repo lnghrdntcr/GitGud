@@ -91,6 +91,21 @@ async function saveRepo({ uid, repoName }) {
   }
 }
 
+async function updateHook({ uid, repoName, hook_id }) {
+  const client = await connect()
+
+  try {
+    await client.query(
+      'UPDATE repo SET hook_id = $1 WHERE (uid, repo_name) = ($2, $3)',
+      [hook_id, uid, repoName]
+    )
+    await client.release()
+  } catch (err) {
+    await client.release()
+    throw err
+  }
+}
+
 async function retrieveRepos(uid) {
   const client = await connect()
 
@@ -117,5 +132,6 @@ module.exports = {
   updateUser,
   retrieveToken,
   saveRepo,
+  updateHook,
   retrieveRepos
 }
