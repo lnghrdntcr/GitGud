@@ -38,6 +38,7 @@ async function deleteWebHook({ token, api_url, repoName, uid }) {
       Authorization: `token ${token}`
     })
   })
+  console.log(res)
 
   res = await res.json()
   console.log(res)
