@@ -31,7 +31,8 @@ async function deleteWebHook({ token, api_url, repoName, uid }) {
     api_url.replace('users', 'repos') + '/' + repoName + '/hooks'
 
   const hookId = await getHookId(uid, repoName)
-
+  console.log('HOOKID')
+  console.log(hookId)
   let res = await fetch(repoHooksURL + '/' + hookId, {
     method: 'DELETE',
     headers: new fetch.Headers({

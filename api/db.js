@@ -130,6 +130,9 @@ async function getHookId(uid, repoName) {
       'SELECT hook_id FROM repo WHERE (user_id, repo_name) = ($1, $2) LIMIT 1',
       [uid, repoName]
     )
+
+    console.log(hookId)
+
     await client.release()
     return hookId[0].hook_id
   } catch (err) {
