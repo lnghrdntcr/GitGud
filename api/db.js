@@ -91,6 +91,21 @@ async function saveRepo({ uid, repoName }) {
   }
 }
 
+async function deleteRepo({ uid, repoName }) {
+  const client = await connect()
+
+  try {
+    await client.query(
+      'DELETE FROM repo WHERE (user_id, repo_name) = ($1, $2)',
+      [uid, repoName]
+    )
+    await client.release()
+  } catch (err) {
+    await client.release()
+    throw err
+  }
+}
+
 async function updateHook({ uid, repoName, hook_id }) {
   const client = await connect()
 
@@ -101,6 +116,22 @@ async function updateHook({ uid, repoName, hook_id }) {
     )
     console.log(rows)
     await client.release()
+  } catch (err) {
+    await client.release()
+    throw err
+  }
+}
+
+async function getHookId(uid, repoName) {
+  const client = await connect()
+
+  try {
+    const { rows: hookId } = await client.query(
+      'SELECT hook_id FROM repo WHERE (user_id, repo_name) = ($1, $2) LIMIT 1',
+      [uid, repoName]
+    )
+    await client.release()
+    return hookId[0].hook_id
   } catch (err) {
     await client.release()
     throw err
@@ -133,6 +164,8 @@ module.exports = {
   updateUser,
   retrieveToken,
   saveRepo,
+  deleteRepo,
   updateHook,
+  getHookId,
   retrieveRepos
 }

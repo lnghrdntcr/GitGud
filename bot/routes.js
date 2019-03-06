@@ -5,10 +5,15 @@ const {
   updateUser,
   retrieveToken,
   saveRepo,
+  deleteRepo,
   retrieveRepos
 } = require('../api/db')
 const { INIT, GITHUB_REPO_URL } = require('../utils/constants')
-const { createWebHook, getApiURLByToken } = require('../api/github')
+const {
+  createWebHook,
+  getApiURLByToken,
+  deleteWebHook
+} = require('../api/github')
 
 const onStart = bot => async msg => {
   const { id: uid } = msg.chat
@@ -86,7 +91,7 @@ const onUnmonitor = bot => async msg => {
     const repos = await retrieveRepos(uid)
     bot.sendMessage(
       uid,
-      'These are the repos you can monitor, click on one (or multiple of them) to be notified when a push occurs!',
+      "These are the repo you're monitoring, click on one (or multiple of them) to stop monitoring them!",
       {
         reply_markup: {
           inline_keyboard: [
@@ -131,7 +136,20 @@ const onCallbackQuery = bot => async answer => {
       return
     }
   } else {
-    // unmonitor
+    try {
+      const token = await retrieveToken(uid)
+      const api_url = await getApiURLByToken(token)
+
+      await deleteWebHook({ token, api_url, repoName, uid })
+      await deleteRepo({ uid, repoName })
+
+      bot.sendMessage(uid, 'Ok! Stopped monitoring ' + repoName)
+    } catch (err) {
+      bot.sendMessage(
+        uid,
+        'There was a problem, try again later or contact the developer at francesco.sgherzi.dev@gmail.com'
+      )
+    }
   }
 }
 

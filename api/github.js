@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
 const { GITHUB_BASE_URL, HEROKU_HOOKS_URL } = require('../utils/constants')
-const { updateHook } = require('./db')
+const { updateHook, getHookId } = require('./db')
 
 async function createWebHook({ token, api_url, repoName, uid }) {
   const repoHooksURL =
@@ -26,6 +26,23 @@ async function createWebHook({ token, api_url, repoName, uid }) {
   await updateHook({ uid, repoName, hook_id: res.id })
 }
 
+async function deleteWebHook({ token, api_url, repoName, uid }) {
+  const repoHooksURL =
+    api_url.replace('users', 'repos') + '/' + repoName + '/hooks'
+
+  const hookId = await getHookId(uid, repoName)
+
+  let res = await fetch(repoHooksURL + '/' + hookId, {
+    method: 'DELETE',
+    headers: new fetch.Headers({
+      Authorization: `token ${token}`
+    })
+  })
+
+  res = await res.json()
+  console.log(res)
+}
+
 async function getApiURLByToken(token) {
   let res = await fetch(`${GITHUB_BASE_URL}/user`, {
     headers: new fetch.Headers({
@@ -39,5 +56,6 @@ async function getApiURLByToken(token) {
 
 module.exports = {
   createWebHook,
+  deleteWebHook,
   getApiURLByToken
 }
