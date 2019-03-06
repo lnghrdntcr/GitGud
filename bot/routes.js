@@ -136,6 +136,7 @@ const onCallbackQuery = bot => async answer => {
       return
     }
   } else {
+    console.log('in unmonitor')
     try {
       const token = await retrieveToken(uid)
       const api_url = await getApiURLByToken(token)
@@ -145,6 +146,7 @@ const onCallbackQuery = bot => async answer => {
 
       bot.sendMessage(uid, 'Ok! Stopped monitoring ' + repoName)
     } catch (err) {
+      console.log(err)
       bot.sendMessage(
         uid,
         'There was a problem, try again later or contact the developer at francesco.sgherzi.dev@gmail.com'
