@@ -150,10 +150,7 @@ async function retrieveRepos(uid) {
       [uid]
     )
 
-    if (repos.length === 0) throw new Error('AUTH_NEEDED')
-
     await client.release()
-    console.log(repos)
     return repos.map(repo => repo.repo_name)
   } catch (err) {
     await client.release()

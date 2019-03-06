@@ -89,6 +89,15 @@ const onUnmonitor = bot => async msg => {
 
   try {
     const repos = await retrieveRepos(uid)
+
+    if (repos.length === 0) {
+      bot.sendMessage(
+        uid,
+        "You're not monitoring any repo, type /list to list them"
+      )
+      return
+    }
+
     bot.sendMessage(
       uid,
       "These are the repo you're monitoring, click on one (or multiple of them) to stop monitoring them!",
@@ -136,7 +145,6 @@ const onCallbackQuery = bot => async answer => {
       return
     }
   } else {
-    console.log('in unmonitor')
     try {
       const token = await retrieveToken(uid)
       const api_url = await getApiURLByToken(token)
