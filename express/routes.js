@@ -67,6 +67,7 @@ const onGithubEvent = (req, res) => {
       }
     )
   } catch (err) {
+    err.uid = uid
     // If there's an error here, it means that the user has blocked the bot
     onErrorBlockedBot(err)
   }

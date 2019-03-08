@@ -167,6 +167,7 @@ const onCallbackQuery = bot => async answer => {
 
 async function onErrorBlockedBot(error) {
   // TODO: clean the database
+  console.log('onErrorBlockedBot')
   console.log(error)
 }
 
