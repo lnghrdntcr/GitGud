@@ -171,6 +171,7 @@ async function deleteUser(uid) {
 
     await client.release()
   } catch (err) {
+    console.log(err)
     await client.release()
   }
 }
