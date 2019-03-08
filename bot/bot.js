@@ -4,7 +4,8 @@ const {
   onLogin,
   onList,
   onUnmonitor,
-  onCallbackQuery
+  onCallbackQuery,
+  onErrorBlockedBot
 } = require('./routes')
 
 const bot = new Bot(process.env.BOT_TOKEN)
@@ -19,6 +20,6 @@ bot.onText(/\/list/, onList(bot))
 
 bot.onText(/\/unmonitor/, onUnmonitor(bot))
 
-bot.on('callback_query', onCallbackQuery(bot))
+bot.on('callback_query', onCallbackQuery(bot)).catch(onErrorBlockedBot)
 
 module.exports = bot

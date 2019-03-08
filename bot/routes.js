@@ -137,6 +137,7 @@ const onCallbackQuery = bot => async answer => {
       return
     } catch (err) {
       console.log(err)
+      err.uid = uid
       if (!err.message.includes('duplicate'))
         bot.sendMessage(
           uid,
@@ -155,6 +156,7 @@ const onCallbackQuery = bot => async answer => {
       bot.sendMessage(uid, 'Ok! Stopped monitoring ' + repoName)
     } catch (err) {
       console.log(err)
+      err.uid = uid
       bot.sendMessage(
         uid,
         'There was a problem, try again later or contact the developer at francesco.sgherzi.dev@gmail.com'
@@ -163,10 +165,16 @@ const onCallbackQuery = bot => async answer => {
   }
 }
 
+async function onErrorBlockedBot(error) {
+  // TODO: clean the database
+  console.log(error)
+}
+
 module.exports = {
   onStart,
   onLogin,
   onList,
   onUnmonitor,
-  onCallbackQuery
+  onCallbackQuery,
+  onErrorBlockedBot
 }
