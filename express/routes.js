@@ -53,7 +53,7 @@ const authUser = async (req, res) => {
   res.sendStatus(200)
 }
 
-const onGithubEvent = (req, res) => {
+const onGithubEvent = async (req, res) => {
   const { uid } = req.params
 
   console.log('RECEIVED GITHUB EVENT')
