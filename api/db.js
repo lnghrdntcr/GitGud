@@ -164,9 +164,15 @@ async function deleteUser(uid) {
 
   try {
     await client.query('BEGIN')
-    await client.query('DELETE FROM repo WHERE user_id = $1', [uid])
-    await client.query('DELETE FROM account WHERE user_id = $1', [uid])
-    await client.query('DELETE FORM token WHERE user_id = $1', [uid])
+
+    const { rows: repos } = await client.query(
+      'SELECT * FROM repo as r join token as t join account as a on r.user_id = t.user_id AND r.user_id = a.user_id AND t.user_id = a.user_id WHERE user_id = $1',
+      [uid]
+    )
+    console.log(repos)
+    // await client.query('DELETE FROM repo WHERE user_id = $1', [uid])
+    // await client.query('DELETE FROM account WHERE user_id = $1', [uid])
+    // await client.query('DELETE FORM token WHERE user_id = $1', [uid])
     await client.query('END')
 
     await client.release()
