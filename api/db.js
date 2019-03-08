@@ -158,6 +158,22 @@ async function retrieveRepos(uid) {
   }
 }
 
+async function deleteUser(uid) {
+  const client = await connect()
+
+  try {
+    await client.query('BEGIN')
+    await client.query('DELETE FROM repo WHERE user_id = $1', [uid])
+    await client.query('DELETE FROM account WHERE user_id = $1', [uid])
+    await client.query('DELETE FORM token WHERE user_id = $1', [uid])
+    await client.query('END')
+
+    await client.release()
+  } catch (err) {
+    await client.release()
+  }
+}
+
 module.exports = {
   connect,
   storeToken,
@@ -167,5 +183,6 @@ module.exports = {
   deleteRepo,
   updateHook,
   getHookId,
-  retrieveRepos
+  retrieveRepos,
+  deleteUser
 }

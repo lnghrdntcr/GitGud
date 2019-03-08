@@ -6,7 +6,8 @@ const {
   retrieveToken,
   saveRepo,
   deleteRepo,
-  retrieveRepos
+  retrieveRepos,
+  deleteUser
 } = require('../api/db')
 const { INIT, GITHUB_REPO_URL } = require('../utils/constants')
 const {
@@ -166,9 +167,8 @@ const onCallbackQuery = bot => async answer => {
 }
 
 async function onErrorBlockedBot(error) {
-  // TODO: clean the database
-  console.log('onErrorBlockedBot')
   console.log(error)
+  if (error.error_code === 403) await deleteUser(error.uid)
 }
 
 module.exports = {
