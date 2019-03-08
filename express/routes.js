@@ -58,19 +58,19 @@ const onGithubEvent = (req, res) => {
 
   console.log('RECEIVED GITHUB EVENT')
 
-  try {
-    bot.sendMessage(
+  bot
+    .sendMessage(
       uid,
       formatCommits(req.body.repository.full_name, req.body.commits),
       {
         parse_mode: 'Markdown'
       }
     )
-  } catch (err) {
-    err.uid = uid
-    // If there's an error here, it means that the user has blocked the bot
-    onErrorBlockedBot(err)
-  }
+    .catch(err => {
+      err.uid = uid
+      // If there's an error here, it means that the user has blocked the bot
+      onErrorBlockedBot(err)
+    })
 
   res.sendStatus(200)
 }
