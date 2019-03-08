@@ -5,6 +5,7 @@ const bot = require('../bot/bot')
 const { storeToken, updateUser } = require('../api/db')
 const { getApiURLByToken } = require('../api/github')
 const { formatCommits } = require('../utils/utils')
+const { onErrorBlockedBot } = require('../bot/routes')
 
 const {
   GITHUB_ACCESS_TOKEN_LINK,
@@ -66,7 +67,8 @@ const onGithubEvent = (req, res) => {
       }
     )
   } catch (err) {
-    console.log(err)
+    // If there's an error here, it means that the user has blocked the bot
+    onErrorBlockedBot(err)
   }
 
   res.sendStatus(200)
