@@ -159,6 +159,7 @@ async function retrieveRepos(uid) {
 }
 
 async function deleteUser(uid) {
+  console.log('IN DELETE USER - CALLED WITH UID ' + uid)
   const client = await connect()
 
   try {

@@ -167,6 +167,7 @@ const onCallbackQuery = bot => async answer => {
 }
 
 async function onErrorBlockedBot(error) {
+  console.log('IN ON ERROR BLOCKED BOT')
   console.log(error)
   if (error.error_code === 403) await deleteUser(error.uid)
 }
