@@ -6,8 +6,7 @@ const {
   retrieveToken,
   saveRepo,
   deleteRepo,
-  retrieveRepos,
-  deleteUser
+  retrieveRepos
 } = require('../api/db')
 const { INIT, GITHUB_REPO_URL } = require('../utils/constants')
 const {
@@ -15,6 +14,8 @@ const {
   getApiURLByToken,
   deleteWebHook
 } = require('../api/github')
+
+const { deleteUser } = require('../utils/utils')
 
 const onStart = bot => async msg => {
   const { id: uid } = msg.chat

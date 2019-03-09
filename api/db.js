@@ -165,20 +165,35 @@ async function deleteUser(uid) {
   try {
     await client.query('BEGIN')
 
-    const { rows: repos } = await client.query(
-      'SELECT * FROM repo as r join token as t join account as a on r.user_id = t.user_id AND r.user_id = a.user_id AND t.user_id = a.user_id WHERE user_id = $1',
-      [uid]
-    )
-    console.log(repos)
-    // await client.query('DELETE FROM repo WHERE user_id = $1', [uid])
-    // await client.query('DELETE FROM account WHERE user_id = $1', [uid])
-    // await client.query('DELETE FORM token WHERE user_id = $1', [uid])
+    await client.query('DELETE FROM repo WHERE user_id = $1', [uid])
+    await client.query('DELETE FROM account WHERE user_id = $1', [uid])
+    await client.query('DELETE FORM token WHERE user_id = $1', [uid])
     await client.query('END')
 
     await client.release()
   } catch (err) {
     console.log(err)
     await client.release()
+  }
+}
+
+async function getUserInfo(uid) {
+  const client = await connect()
+
+  try {
+    const { rows } = await client.query(
+      'SELECT t.token, t.api_url FROM repo as r join token as t on r.user_id = t.user_id WHERE r.user_id = $1',
+      [uid]
+    )
+
+    await client.release()
+
+    return rows[0]
+  } catch (err) {
+    console.log(`**api/db/getUserInfo(${uid})**`)
+    console.log(err)
+    await client.release()
+    throw err
   }
 }
 
@@ -192,5 +207,6 @@ module.exports = {
   updateHook,
   getHookId,
   retrieveRepos,
+  getUserInfo,
   deleteUser
 }
