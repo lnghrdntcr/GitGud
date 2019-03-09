@@ -145,6 +145,7 @@ const onCallbackQuery = bot => async answer => {
           uid,
           'There was a problem activating the monitoring of your repo, please try again later'
         )
+      else bot.sendMessage(uid, `You're already monitoring ${repoName}`)
       return
     }
   } else {
